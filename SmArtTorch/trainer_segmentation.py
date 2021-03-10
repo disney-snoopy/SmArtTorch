@@ -53,7 +53,7 @@ class TrainerSegmentation():
         self.reverse_final = unloader(self.seg.output_recon[-1])
 
     def generate_gif(self, file_name = 'style_transfer_result.gif', fps = 5):
-        #
+
         images_data_style = [unloader(img) for img in self.lbfgs_transfer.output_imgs]
         images_data_recon = [unloader(img) for img in self.seg.output_recon]
         images_data = images_data_style + images_data_recon

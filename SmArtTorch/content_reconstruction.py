@@ -88,6 +88,7 @@ class Content_Reconstructor(nn.Module):
                 if verbose == 1:
                     if epoch % 20 == 0:
                         print(f'Epoch {epoch}, Loss: {loss}')
-                one_crop_history.append(img_start.detach().cpu().data.clamp_(0,1))
+                if epoch == epochs-1:
+                    one_crop_history.append(img_start.detach().cpu().data.clamp_(0,1))
 
             self.output_imgs.append(one_crop_history)
