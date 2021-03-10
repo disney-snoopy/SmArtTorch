@@ -15,9 +15,9 @@ class TrainerSegmentation():
 
         # resize depending on gpu availability
         if is_available():
-            self.tensor_content_rsz = resize(tensor_content.clone(), [int(self.tensor_content.shape[-2]*(2/3)), int(self.tensor_content.shape[-1]*(2/3))])
+            self.tensor_content_rsz = resize(tensor_content.clone(), 800)
         else:
-            self.tensor_content_rsz = resize(tensor_content.clone(), [int(self.tensor_content.shape[-2]/3), int(self.tensor_content.shape[-1]/3)])
+            self.tensor_content_rsz = resize(tensor_content.clone(), 400)
         self.path_vgg = path_vgg
         self.path_seg = path_seg
 
