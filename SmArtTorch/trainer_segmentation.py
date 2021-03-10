@@ -67,7 +67,11 @@ class TrainerSegmentation():
 
         images_data_style = [unloader(img) for img in self.lbfgs_transfer.output_imgs]
         images_data_recon = [unloader(img) for img in self.seg.output_recon]
+
         images_data = images_data_style + images_data_recon
         np_imgs = [np.array(img) for img in images_data]
+        #extending final picture frames
+        for i in range(20):
+            np_imgs.append(np_imgs[-1])
         gif = imageio.mimwrite(file_name, np_imgs, fps = fps)
         return gif
