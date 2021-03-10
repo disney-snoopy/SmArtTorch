@@ -4,10 +4,18 @@ setuptools>=26
 twine
 wheel>=0.29
 
+# visualisation
+matplotlib
+
 # data science
 numpy
-pandas
-scikit-learn
+# pandas
+# scikit-learn
+
+# deep learning frameworks
+torch==1.7.1
+torchvision==0.8.2
+# tensorflow
 
 # tests/linter
 black
@@ -19,11 +27,14 @@ yapf
 # API
 gcsfs
 google-cloud-storage
-mlflow
-s3fs
+# mlflow
 
 # utilities
 six>=1.14
-joblib
+# joblib
 memoized-property
 termcolor
+# jupyter
+# tqdm
+imageio
+streamlit
