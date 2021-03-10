@@ -15,7 +15,7 @@ class TrainerSegmentation():
 
         # resize depending on gpu availability
         if is_available():
-            self.tensor_content_rsz = resize(tensor_content.clone(), [int(self.tensor_content.shape[-2]/2), int(self.tensor_content.shape[-1]/2)])
+            self.tensor_content_rsz = resize(tensor_content.clone(), [int(self.tensor_content.shape[-2]*(2/3)), int(self.tensor_content.shape[-1]*(2/3))])
         else:
             self.tensor_content_rsz = resize(tensor_content.clone(), [int(self.tensor_content.shape[-2]/3), int(self.tensor_content.shape[-1]/3)])
         self.path_vgg = path_vgg
@@ -63,7 +63,7 @@ class TrainerSegmentation():
         self.seg.patch(self.cont_recon.output_imgs)
         self.reverse_final = unloader(self.seg.output_recon[-1])
 
-    def generate_gif(self, file_name = 'style_transfer_result.gif', fps = 5):
+    def generate_gif(self, file_name = 'style_transfer_result.gif', fps = 7):
 
         images_data_style = [unloader(img) for img in self.lbfgs_transfer.output_imgs]
         images_data_recon = [unloader(img) for img in self.seg.output_recon]
