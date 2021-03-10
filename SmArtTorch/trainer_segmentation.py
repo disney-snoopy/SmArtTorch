@@ -12,10 +12,12 @@ class TrainerSegmentation():
     def __init__(self, tensor_content, tensor_style, path_vgg = vgg_model_path, path_seg = segmentation_model_path):
         self.tensor_content = tensor_content.to(device)
         self.tensor_style = tensor_style.to(device)
+
+        # resize depending on gpu availability
         if is_available():
-            self.tensor_content_rsz = resize(tensor_content.clone(), [int(np.ceil(self.tensor_content.shape[-2]/2)), int(np.ceil(self.tensor_style.shape[-1]/2))])
+            self.tensor_content_rsz = resize(tensor_content.clone(), [int(self.tensor_content.shape[-2]/2), int(self.tensor_content.shape[-1]/2)])
         else:
-            self.tensor_content_rsz = resize(tensor_content.clone(), [int(np.ceil(self.tensor_content.shape[-2]/3)), int(np.ceil(self.tensor_style.shape[-1]/3))])
+            self.tensor_content_rsz = resize(tensor_content.clone(), [int(self.tensor_content.shape[-2]/3), int(self.tensor_content.shape[-1]/3)])
         self.path_vgg = path_vgg
         self.path_seg = path_seg
 
@@ -24,9 +26,9 @@ class TrainerSegmentation():
         # instantiate
         self.lbfgs_transfer = LBFGS_Transfer(model_path = self.path_vgg)
         # run style transfer
-        self.lbfgs_transfer.learn(content_img=self.tensor_content,
+        self.lbfgs_transfer.learn(content_img=self.tensor_content_rsz,
                                     style_img=self.tensor_style,
-                                    input_img=self.tensor_content,
+                                    input_img=self.tensor_content_rsz,
                                     style_weight=style_weight,
                                     epochs=epochs,
                                     output_freq=output_freq)
