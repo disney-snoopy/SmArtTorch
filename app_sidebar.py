@@ -7,9 +7,9 @@ import matplotlib.pyplot as plt
 import torchvision.transforms as T
 import torch
 import base64
-from SmArtGenerativeTorch.utils import loader, unloader
-from SmArtGenerativeTorch.trainer_segmentation import TrainerSegmentation
-from SmArtGenerativeTorch.params import *
+from SmArtTorch.utils import loader, unloader
+from SmArtTorch.trainer_segmentation import TrainerSegmentation
+from SmArtTorch.params import *
 
 # setting wide screen
 st.set_page_config(layout="wide")

@@ -24,9 +24,9 @@ gallery_2 = os.path.join(home, 'images/gallery_2.png')
 
 
 # gallery images paths
-path_1 = os.path.join(home, 'images/Leonid_Afremov-AlleyByTheLake.jpg')
-path_2 = os.path.join(home, 'images/adam-styka-youngwaterbearer.jpeg')
-path_3 = os.path.join(home, 'images/david-michael-hinnebusch-sleep-til-spring.jpg')
+path_1 = 'https://res.cloudinary.com/dbxctsqiw/image/upload/v1615340391/SmArt/Leonid_Afremov-AlleyByTheLake_dyjbaw.jpg'
+path_2 = 'https://res.cloudinary.com/dbxctsqiw/image/upload/v1615340426/SmArt/adam-styka-youngwaterbearer_bsylib.jpg'
+path_3 = 'https://res.cloudinary.com/dbxctsqiw/image/upload/v1615340462/SmArt/david-michael-hinnebusch-sleep-til-spring_rttcyo.jpg'
 path_4 = os.path.join(home, 'images/GeorgesSeurat-sunday_afternoon.jpg')
 path_5 = os.path.join(home, 'images/houria-niati-beaute-calme-et-volupte.jpg')
 
