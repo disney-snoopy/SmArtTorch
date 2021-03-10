@@ -21,8 +21,8 @@ if torch.cuda.is_available():
 else:
     st.sidebar.write('This app is powered by CPU')
 
+st.subheader('SmArt Generative User Guide')
 '''
-SmArt Generative User Guide \n
 1. Upload your image to styise. \n
 2. You can either upload your style image or choose from our curated gallery. \n
 3. Choose the people you want to restore! \n
@@ -32,7 +32,7 @@ SmArt Generative User Guide \n
 # multi column layout and headers
 c1, c2 = st.beta_columns((1, 1))
 c1.header("Content picture")
-c2.header("style picture")
+c2.header("Style picture")
 st.subheader('Style Gallery')
 
 # hyperparams
@@ -42,10 +42,10 @@ style_weight = 1e15
 transfer_strength_slider = st.sidebar.select_slider(label = 'Style Transfer Strength',
                                                     options = ['Test', 'Weak', 'Average', 'Strong'],
                                                     value = 'Average')
-transfer_epoch_dict = {'Test':10,
-                       'Weak':150,
-                       'Average':300,
-                       'Strong':600}
+transfer_epoch_dict = {'Test':(10, 2),
+                       'Weak':(150, 15),
+                       'Average':(250, 25),
+                       'Strong':(400, 40)}
 
 transfer_epoch = transfer_epoch_dict[transfer_strength_slider]
 
@@ -53,10 +53,10 @@ transfer_epoch = transfer_epoch_dict[transfer_strength_slider]
 restore_strength_slider = st.sidebar.select_slider(label = 'Restore Strength',
                                                     options = ['Test', 'Weak', 'Average', 'Strong'],
                                                     value = 'Average')
-restore_epoch_dict = {'Test':10,
-                       'Weak':50,
-                       'Average':100,
-                       'Strong':200}
+restore_epoch_dict = {'Test':(10, 2),
+                       'Weak':(100,10),
+                       'Average':(200, 20),
+                       'Strong':(300, 30)}
 
 restore_epoch = restore_epoch_dict[restore_strength_slider]
 
@@ -143,7 +143,7 @@ def get_stylise(image_content, image_style, style_weight, epochs, output_freq):
                                 tensor_style=tensor_style,
                                 path_vgg=vgg_model_path,
                                 path_seg=segmentation_model_path)
-    trainer.stylise(style_weight = style_weight, epochs = epochs, output_freq = output_freq)
+    trainer.stylise(style_weight = style_weight, epochs = transfer_epoch[0], output_freq = transfer_epoch[0])
     return trainer.forward_final
 
 @st.cache(hash_funcs={torch.Tensor: hash_func})
@@ -172,13 +172,13 @@ def get_restoration(image_content, image_style, style_weight, epochs, output_fre
                                 path_vgg=vgg_model_path,
                                 path_seg=segmentation_model_path)
     trainer.segmentation()
-    trainer.stylise(style_weight = style_weight, epochs = epochs, output_freq = output_freq)
+    trainer.stylise(style_weight = style_weight, epochs = transfer_epoch[0], output_freq = transfer_epoch[1])
     trainer.seg_crop(object_idx = object_idx)
-    trainer.content_reconstruction(lr = 0.001, epochs = 3, output_freq=1)
+    trainer.content_reconstruction(lr = 0.001, epochs = restore_epoch[0], output_freq=restore_epoch[1])
     trainer.patch()
     reverse_final = trainer.reverse_final
     if check_gif:
-        gif = trainer.generate_gif()
+        gif = trainer.generate_gif(fps = 5)
     return reverse_final
 
 
