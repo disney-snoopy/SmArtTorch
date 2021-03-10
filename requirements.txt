@@ -9,13 +9,11 @@ matplotlib
 
 # data science
 numpy
-# pandas
-# scikit-learn
+
 
 # deep learning frameworks
 torch==1.7.1
 torchvision==0.8.2
-# tensorflow
 
 # tests/linter
 black
@@ -24,17 +22,8 @@ flake8
 pytest
 yapf
 
-# API
-gcsfs
-google-cloud-storage
-# mlflow
-
 # utilities
 six>=1.14
-# joblib
 memoized-property
-termcolor
-# jupyter
-# tqdm
 imageio
 streamlit
