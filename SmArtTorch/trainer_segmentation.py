@@ -1,5 +1,7 @@
 import numpy as np
 import imageio
+from torchvision.transforms.functional import resize
+from torch.cuda import is_available
 from SmArtTorch.utils import loader, unloader
 from SmArtTorch.params import device, segmentation_model_path, vgg_model_path
 from SmArtTorch.lbfgs_transfer import LBFGS_Transfer
@@ -10,6 +12,10 @@ class TrainerSegmentation():
     def __init__(self, tensor_content, tensor_style, path_vgg = vgg_model_path, path_seg = segmentation_model_path):
         self.tensor_content = tensor_content.to(device)
         self.tensor_style = tensor_style.to(device)
+        if is_available():
+            self.tensor_content_rsz = resize(tensor_content.clone(), [int(np.ceil(self.tensor_content.shape[-2]/2)), int(np.ceil(self.tensor_style.shape[-1]/2))])
+        else:
+            self.tensor_content_rsz = resize(tensor_content.clone(), [int(np.ceil(self.tensor_content.shape[-2]/3)), int(np.ceil(self.tensor_style.shape[-1]/3))])
         self.path_vgg = path_vgg
         self.path_seg = path_seg
 
@@ -24,6 +30,9 @@ class TrainerSegmentation():
                                     style_weight=style_weight,
                                     epochs=epochs,
                                     output_freq=output_freq)
+        # converting back to original size
+        self.lbfgs_transfer.output_imgs = [resize(i, [(self.tensor_content.shape[-2]), (self.tensor_content.shape[-1])]) for i in self.lbfgs_transfer.output_imgs]
+
         # final stylised image
         self.forward_final = unloader(self.lbfgs_transfer.output_imgs[-1])
 
