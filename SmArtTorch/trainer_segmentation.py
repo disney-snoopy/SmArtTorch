@@ -65,8 +65,8 @@ class TrainerSegmentation():
 
     def generate_gif(self, file_name = 'style_transfer_result.gif', fps = 7):
 
-        images_data_style = [unloader(img) for img in self.lbfgs_transfer.output_imgs]
-        images_data_recon = [unloader(img) for img in self.seg.output_recon]
+        images_data_style = [unloader(resize(img, 800)) for img in self.lbfgs_transfer.output_imgs]
+        images_data_recon = [unloader(resize(img, 800)) for img in self.seg.output_recon]
 
         images_data = images_data_style + images_data_recon
         np_imgs = [np.array(img) for img in images_data]
