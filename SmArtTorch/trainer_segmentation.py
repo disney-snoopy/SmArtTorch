@@ -1,5 +1,8 @@
 import numpy as np
 import imageio
+import os
+import io
+from PIL import Image
 from torchvision.transforms.functional import resize
 from torch.cuda import is_available
 from SmArtTorch.utils import loader, unloader
@@ -73,5 +76,4 @@ class TrainerSegmentation():
         #extending final picture frames
         for i in range(20):
             np_imgs.append(np_imgs[-1])
-        gif = imageio.mimwrite(file_name, np_imgs, fps = fps)
-        return gif
+        imageio.mimwrite(file_name, np_imgs, fps = fps)

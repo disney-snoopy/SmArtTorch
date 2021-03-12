@@ -96,7 +96,7 @@ class Segmentation():
             plt.text(box[0], box[1], s = f'{target_counter}', fontsize = 12, color = 'black', backgroundcolor = 'gray', alpha = 0.7)
             target_counter += 1
         # subplots for mask contour
-        fig, axs = plt.subplots(int(np.ceil(target_counter/4)), 4,
+        fig, axs = plt.subplots(1+int(np.ceil(target_counter/4)), 4,
                                 figsize = (12, 1+2*(np.ceil(target_counter/4))),
                                 sharex = True, sharey = True)
         axs = axs.flatten()

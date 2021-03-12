@@ -38,7 +38,7 @@ path_10 = os.path.join(home, 'images/munch_scream.jpg')
 
 path_11 = os.path.join(home, 'images/michelangelo-creation-of-adam.jpg')
 path_12 = os.path.join(home, 'images/van-gogh-wheatfields.jpeg')
-path_13 = os.path.join(home, 'images/images/starry_night.jpg')
+path_13 = os.path.join(home, 'images/starry_night.jpg')
 path_14 = os.path.join(home, 'images/KatsushikaHokusai-TheGreatWaveoffKanagawa.jpeg')
 path_15 = os.path.join(home, 'images/last_supper.jpg')
 

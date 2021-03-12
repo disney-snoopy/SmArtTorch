@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 import torchvision.transforms as T
 import torch
 import base64
+import os
+from datetime import datetime
 from SmArtTorch.utils import loader, unloader
 from SmArtTorch.trainer_segmentation import TrainerSegmentation
 from SmArtTorch.params import *
@@ -117,6 +119,18 @@ else:
 
 
 def main():
+
+    #delete previous gifs
+    now = datetime.now()
+    if int(now.strftime('%M'))>30:
+        gif_dir=os.listdir("gif")
+        for item in gif_dir:
+            if item.startswith(now.strftime('%H')):
+                pass
+            else:
+                os.remove(os.path.join('gif', item))
+
+
     #dummy variables for if statements
     forward_final = None
     fig = None
@@ -173,8 +187,8 @@ def main():
     if content_up is not None and style_up is not None:
         time.sleep(0.5)
         if forward_final is None:
-            forward_final = get_stylise(image_content = content_up, image_style = style_up,
-                                style_weight = style_weight, epochs = transfer_epoch[0], output_freq = transfer_epoch[1])
+            forward_final, gif_name = get_stylise(image_content = content_up, image_style = style_up,
+                                                   style_weight = style_weight, epochs = transfer_epoch[0], output_freq = transfer_epoch[1])
             e1.image(forward_final, use_column_width = True)
             e2.markdown('''&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👈 Expand!''')
 
@@ -191,7 +205,9 @@ def main():
                 t1.markdown('''___''')
                 t1.subheader('🎥Enjoy your gif!')
                 y1, y2 = st.beta_columns((1, 1))
-                y1.image("style_transfer_result.gif", use_column_width = True, output_format = 'GIF')
+                #y1.image(gif.getvalue(), use_column_width = True, output_format = 'GIF')
+                y1.image(gif_name, use_column_width = True, output_format = 'GIF')
+
                 y2.markdown('''&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👈 Expand!''')
                 y2.markdown('''🚩Enjoy your stylised picture.''')
                 y2.markdown('''🙈It can take some time to fully load the gif. It will animate smoothly once fully loaded.''')
@@ -220,9 +236,9 @@ def main():
             if len(object_idx) == 0:
                 g2.write('Choose object number from the dropdown!')
             else:
-                reverse_final = get_restoration(image_content = content_up, image_style = style_up,
-                                                style_weight = style_weight, epochs = restore_epoch[0],
-                                                output_freq = restore_epoch[1], object_idx = object_idx)
+                reverse_final, gif_name = get_restoration(image_content = content_up, image_style = style_up,
+                                                        style_weight = style_weight, epochs = restore_epoch[0],
+                                                        output_freq = restore_epoch[1], object_idx = object_idx)
                 u1, u2 = st.beta_columns((9, 1))
                 u1.markdown('''___''')
                 u1.subheader('🧑‍🔧You details are restored!')
@@ -234,7 +250,7 @@ def main():
                 o1.markdown('''___''')
                 o1.subheader('🎥Enjoy your gif!')
                 r1, r2 = st.beta_columns((1, 1))
-                r1.image("style_transfer_result.gif", use_column_width = True, output_format = 'PNG')
+                r1.image(gif_name, use_column_width = True, output_format = 'GIF')
                 r2.markdown('''&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👈 Expand!''')
                 r2.markdown('''🚩Enjoy your stylised picture.''')
                 r2.markdown('''🙈It can take some time to fully load the gif. It will animate smoothly once fully loaded.''')
@@ -243,13 +259,15 @@ def main():
                 r2.markdown('''💾Please save now to keep the pictures''')
                 r2.markdown('''🔄To start over with new images, refresh the page or hit F5''')
 
+
         btn_gif_2 = g2.button('Get me gif without restoration')
         if btn_gif_2:
             w1, w2 = st.beta_columns((9, 1))
             w1.markdown('''___''')
             w1.subheader('🎥Enjoy your gif!')
             r1, r2 = st.beta_columns((1, 1))
-            r1.image("style_transfer_result.gif", use_column_width = True, output_format = 'PNG')
+            r1.image(gif_name, use_column_width = True, output_format = 'GIF')
+
             r2.markdown('''&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👈 Expand!''')
             r2.markdown('''🚩Enjoy your stylised picture.''')
             r2.markdown('''🙈It can take some time to fully load the gif. It will animate smoothly once fully loaded.''')
@@ -281,8 +299,14 @@ def get_stylise(image_content, image_style, style_weight, epochs , output_freq):
       a = None
     trainer.seg = dummy
     trainer.seg.output_recon = []
-    gif = trainer.generate_gif(fps = 10)
-    return trainer.forward_final
+
+    now = datetime.now()
+    current_time = now.strftime('%H%M%S%s')
+    file_name = f'gif/{current_time}.gif'
+
+    trainer.generate_gif(file_name = file_name, fps = 10)
+
+    return trainer.forward_final, file_name
 
 @st.cache(hash_funcs={torch.Tensor: hash_func})
 def get_segmentation(image_content, image_style):
@@ -322,8 +346,15 @@ def get_restoration(image_content, image_style, style_weight, epochs, output_fre
     trainer.content_reconstruction(lr = 0.0015, epochs = restore_epoch[0], output_freq = restore_epoch[1])
     trainer.patch()
     reverse_final = trainer.reverse_final
-    gif = trainer.generate_gif(fps = 10)
-    return reverse_final
+
+    now = datetime.now()
+    current_time = now.strftime('%H%M%S%s')
+    file_name = f'gif/{current_time}.gif'
+
+    gif = trainer.generate_gif(file_name = file_name, fps = 10)
+
+    return reverse_final, file_name
 
 if __name__ == "__main__":
     main()
+
