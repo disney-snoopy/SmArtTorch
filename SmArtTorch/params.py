@@ -16,7 +16,7 @@ home = os.getcwd()
 # model paths for streamlit
 # need to be updated for gcp
 vgg_model_path = os.path.join(home, 'pretrained_models/vgg16_pretrained')
-segmentation_model_path = os.path.join(home, 'pretrained_models/torch_segmentation_finetuned')
+segmentation_model_path = os.path.join(home, 'pretrained_models/segmentation_finetuned')
 
 # gallery wall paper
 gallery_1 = os.path.join(home, 'images/gallery_1.png')
