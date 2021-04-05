@@ -1,74 +1,22 @@
-# Data analysis
-- Document here the project: SmArtTorch
-- Description: Project Description
-- Data Source:
-- Type of analysis:
+# SmArt Style Transfer
+- Torch implementation of style transfer
+- Segmentation model is used in series to detect and restore human objects from the stylised output
+- Docker / streamlit deployment for public access
+- 
+![Alt text](https://res.cloudinary.com/dbxctsqiw/image/upload/v1617573371/SmArt/213f7642f6e0111a6bd670f182305d7ffbf4305eaa7aec298762b624_mgocqr.jpg "a title")
+![Alt text](https://res.cloudinary.com/dbxctsqiw/image/upload/v1617573223/SmArt/style_content_ufu5rm.png "a title")
 
-Please document the project the better you can.
 
-# Startup the project
+## Motivation
+Style transfer allows amazing stylisation of any pictures with styles from masterpieces. Unfortunately, style transfer tends to blur the details of the original picture that a user might want to preserve. The limitation becomes very visible when the details of interest are not dominantly picked up by convolution filters. I stylsed my wife's picture to give her a pleasant surprise, only to be disappointed by her blurry face in the final output. To solve this problem, I implemented segmentation model to detect human objects in the picture and restore the details of them after stylisation.
 
-The initial setup.
 
-Create virtualenv and install the project:
-```bash
-sudo apt-get install virtualenv python-pip python-dev
-deactivate; virtualenv ~/venv ; source ~/venv/bin/activate ;\
-    pip install pip -U; pip install -r requirements.txt
-```
 
-Unittest test:
-```bash
-make clean install test
-```
-
-Check for SmArtTorch in gitlab.com/{group}.
-If your project is not set please add it:
-
-- Create a new project on `gitlab.com/{group}/SmArtTorch`
-- Then populate it:
+## How to use
+After cloning the repo, you can run the streamlit app either with your local backend or remote backend.
 
 ```bash
-##   e.g. if group is "{group}" and project_name is "SmArtTorch"
-git remote add origin git@github.com:{group}/SmArtTorch.git
-git push -u origin master
-git push -u origin --tags
+streamlit run app_sidebar.py
 ```
 
-Functionnal test with a script:
 
-```bash
-cd
-mkdir tmp
-cd tmp
-SmArtTorch-run
-```
-
-# Install
-
-Go to `https://github.com/{group}/SmArtTorch` to see the project, manage issues,
-setup you ssh public key, ...
-
-Create a python3 virtualenv and activate it:
-
-```bash
-sudo apt-get install virtualenv python-pip python-dev
-deactivate; virtualenv -ppython3 ~/venv ; source ~/venv/bin/activate
-```
-
-Clone the project and install it:
-
-```bash
-git clone git@github.com:{group}/SmArtTorch.git
-cd SmArtTorch
-pip install -r requirements.txt
-make clean install test                # install and test
-```
-Functionnal test with a script:
-
-```bash
-cd
-mkdir tmp
-cd tmp
-SmArtTorch-run
-```
